@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع لمعرفة العمر والبرج</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            text-align: center;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input {
+            margin: 5px;
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>معرفة عمرك وبرجك</h1>
+    <label for="day">اليوم:</label>
+    <input type="number" id="day" min="1" max="31"><br>
+    <label for="month">الشهر:</label>
+    <input type="number" id="month" min="1" max="12"><br>
+    <label for="year">السنة:</label>
+    <input type="number" id="year" min="1900" max="2024"><br><br>
+    <button onclick="calculateDetails()">احسب</button>
+
+    <div id="result"></div>
+
+    <script>
+        function calculateDetails() {
+            const day = document.getElementById("day").value;
+            const month = document.getElementById("month").value;
+            const year = document.getElementById("year").value;
+
+            if (!day || !month || !year) {
+                alert("يرجى إدخال تاريخ الميلاد بالكامل.");
+                return;
+            }
+
+            const birthDate = new Date(year, month - 1, day);
+            const today = new Date();
+
+            const ageYears = today.getFullYear() - birthDate.getFullYear();
+            let ageMonths = today.getMonth() - birthDate.getMonth();
+            let ageDays = today.getDate() - birthDate.getDate();
+
+            if (ageDays < 0) {
+                ageMonths--;
+                ageDays += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+            }
+            
+            if (ageMonths < 0) {
+                ageMonths += 12;
+            }
+
+            const zodiacSign = getZodiacSign(day, month);
+
+            document.getElementById("result").innerHTML = `
+                <p>عمرك: ${ageYears} سنة و ${ageMonths} شهر و ${ageDays} يوم</p>
+                <p>برجك: ${zodiacSign.name}</p>
+                <p>${zodiacSign.details}</p>
+            `;
+        }
+
+        function getZodiacSign(day, month) {
+            if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) {
+                return { name: "الدلو", details: "برج الدلو معروف بالاستقلالية والابتكار. الأشخاص المولودين تحت هذا البرج غالباً ما يكونون مفكرين متقدمين ويميلون إلى الابتعاد عن القواعد التقليدية." };
+            } else if ((month == 2 && day >= 19) || (month == 3 && day <= 20)) {
+                return { name: "الحوت", details: "برج الحوت معروف بالحساسية والحنان. يتميز الأشخاص المولودون تحت هذا البرج بالتعاطف والقدرة على فهم مشاعر الآخرين." };
+            } else if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) {
+                return { name: "الحمل", details: "برج الحمل معروف بالحيوية والشجاعة. يتميز الأشخاص المولودون تحت هذا البرج بالاندفاع والحماس." };
+            } else if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) {
+                return { name: "الثور", details: "برج الثور معروف بالثبات والعناد. الأشخاص المولودون تحت هذا البرج يميلون إلى الإصرار والصبر." };
+            } else if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) {
+                return { name: "الجوزاء", details: "برج الجوزاء معروف بالذكاء والتواصل. يتميز الأشخاص المولودون تحت هذا البرج بالمرونة والقدرة على التكيف." };
+            } else if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) {
+                return { name: "السرطان", details: "برج السرطان معروف بالعاطفة والحنان. الأشخاص المولودون تحت هذا البرج يتميزون بالحب العميق للعائلة والبيت." };
+            } else if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) {
+                return { name: "الأسد", details: "برج الأسد معروف بالكرم والثقة بالنفس. يتميز الأشخاص المولودون تحت هذا البرج بالشخصية القيادية والميل للظهور." };
+            } else if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) {
+                return { name: "العذراء", details: "برج العذراء معروف بالدقة والاهتمام بالتفاصيل. الأشخاص المولودون تحت هذا البرج يتميزون بالتنظيم والقدرة على التحليل." };
+            } else if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) {
+                return { name: "الميزان", details: "برج الميزان معروف بالتوازن والانسجام. الأشخاص المولودون تحت هذا البرج يميلون إلى البحث عن العدل والسلام." };
+            } else if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) {
+                return { name: "العقرب", details: "برج العقرب معروف بالقوة والغموض. يتميز الأشخاص المولودون تحت هذا البرج بالشغف والقدرة على التحمل." };
+            } else if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) {
+                return { name: "القوس", details: "برج القوس معروف بالحرية والمغامرة. يتميز الأشخاص المولودون تحت هذا البرج بالروح المرحة وحب الاستكشاف." };
+            } else if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) {
+                return { name: "الجدي", details: "برج الجدي معروف بالجدية والمسؤولية. الأشخاص المولودون تحت هذا البرج يميلون إلى الطموح والعمل الجاد." };
+            }
+        }
+    </script>
+</body>
+</html>
